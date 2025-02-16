@@ -3,6 +3,7 @@ import { useFonts } from "expo-font";
 import "./global.css";
 import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
+import GlobalProvider from "@/context/GlobalProvider";
 export default function RootLayout() {
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("../assets/fonts/Poppins-Black.ttf"),
@@ -27,5 +28,9 @@ export default function RootLayout() {
   if (!fontsLoaded && !error) {
     return null;
   }
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <GlobalProvider>
+      <Stack screenOptions={{ headerShown: false }} />
+    </GlobalProvider>
+  );
 }

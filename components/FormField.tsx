@@ -7,7 +7,7 @@ import {
   KeyboardTypeOptions,
 } from "react-native";
 import React, { useState } from "react";
-import { icons, images } from "@/constants";
+import { icons } from "@/constants";
 
 interface FormFieldProps {
   title: string;
@@ -16,6 +16,7 @@ interface FormFieldProps {
   placeholder?: string;
   otherStyle?: string;
   keyboardType?: KeyboardTypeOptions;
+  errorMessage?: string;
 }
 const FormField = ({
   title,
@@ -24,6 +25,7 @@ const FormField = ({
   placeholder,
   otherStyle,
   keyboardType,
+  errorMessage,
   ...props
 }: FormFieldProps) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -55,6 +57,12 @@ const FormField = ({
           </TouchableOpacity>
         )}
       </View>
+
+      {errorMessage && (
+        <Text className="text-xs font-psemibold text-red-600 px-2 mt-2">
+          {errorMessage}
+        </Text>
+      )}
     </View>
   );
 };
