@@ -1,4 +1,11 @@
-import { Account, Avatars, Client, Databases, ID } from "react-native-appwrite";
+import {
+  Account,
+  Avatars,
+  Client,
+  Databases,
+  ID,
+  Query,
+} from "react-native-appwrite";
 
 interface signInParams {
   email: string;
@@ -112,6 +119,20 @@ export const getAllPosts = async () => {
     const posts = await databases.listDocuments(
       config.databaseId!,
       config.videosCollectionId!
+    );
+
+    return posts.documents;
+  } catch (error) {
+    throw new Error();
+  }
+};
+
+export const getLatestPosts = async () => {
+  try {
+    const posts = await databases.listDocuments(
+      config.databaseId!,
+      config.videosCollectionId!,
+      [Query.orderDesc("$createdAt"), Query.limit(7)]
     );
 
     return posts.documents;

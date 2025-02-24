@@ -7,16 +7,19 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
+
 import images from "@/constants/images";
 import SearchInput from "@/components/SearchInput";
 import { Trending } from "@/components/Trending";
 import { EmptyState } from "@/components/EmptyState";
-import { getAllPosts } from "@/lib/appwrite";
-import { useAppwrite } from "@/lib/useAppwrite";
 import { VideoCard } from "@/components/videoCard";
+
+import { getAllPosts, getLatestPosts } from "@/lib/appwrite";
+import { useAppwrite } from "@/lib/useAppwrite";
 
 const Home = () => {
   const { data, refetch } = useAppwrite(getAllPosts);
+  const { data: latestPosts } = useAppwrite(getLatestPosts);
 
   const [search, setSearch] = useState("");
   const [refreshing, setRefreshing] = useState(false);
@@ -32,7 +35,7 @@ const Home = () => {
       <FlatList
         data={data}
         keyExtractor={(item) => item.title}
-        renderItem={({ item }) => <VideoCard video={item} />}
+        renderItem={({ item }) => <VideoCard key={item.$id} video={item} />}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6">
             <View className="justify-between items-start flex-row mb-6">
@@ -66,7 +69,7 @@ const Home = () => {
                 Latest Videos
               </Text>
 
-              <Trending posts={data} />
+              <Trending posts={latestPosts ?? []} />
             </View>
           </View>
         )}
